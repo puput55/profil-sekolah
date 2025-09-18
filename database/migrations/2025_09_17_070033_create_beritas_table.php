@@ -17,8 +17,7 @@ return new class extends Migration
             $table->text('isi');
             $table->date('tanggal');
             $table->string('gambar', 100)->nullable();
-            $table->userbigInteger('id_user')->unsigned();
-            $table->foreign('id_user')->references('id_user')->on('users')->onDelete('cascade');
+            $table->foreignId('id_user')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }
