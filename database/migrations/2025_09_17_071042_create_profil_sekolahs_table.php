@@ -21,7 +21,7 @@ return new class extends Migration
             $table->text('alamat');
             $table->string('kontak', 15)->nullable();
             $table->text('visi_misi')->nullable();
-            $table->year('tahun_berdiri', 4);
+            $table->year('tahun_berdiri');
             $table->text('deskripsi')->nullable();
             $table->timestamps();
         });

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->text('isi');
             $table->date('tanggal');
             $table->string('gambar', 100)->nullable();
-            $table->foreignId('id_user')->references('id')->on('users')->onDelete('cascade');
+            $table->foreignId('id_user')->constrained('users', 'id_user')->cascadeOnDelete();
             $table->timestamps();
         });
     }

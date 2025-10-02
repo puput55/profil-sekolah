@@ -10,18 +10,26 @@ use Illuminate\Notifications\Notifiable;
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory;
 
     /**
      * The attributes that are mass assignable.
      *
      * @var list<string>
      */
+    protected $table = 'users';
+    protected $primaryKey = 'id_user';
+    protected $keyType = 'int';
     protected $fillable = [
-        'name',
-        'email',
+        'username',
         'password',
+        'role',
     ];
+
+    public function berita()
+    {
+        return $this->hasMany(Berita::class, 'id_user');
+    }
 
     /**
      * The attributes that should be hidden for serialization.
@@ -38,11 +46,11 @@ class User extends Authenticatable
      *
      * @return array<string, string>
      */
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
-    }
+    // protected function casts(): array
+    // {
+    //     return [
+    //         'email_verified_at' => 'datetime',
+    //         'password' => 'hashed',
+    //     ];
+    // }
 }
