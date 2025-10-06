@@ -2,131 +2,109 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\galeri;
+use App\Models\Galeri;
 use Illuminate\Http\Request;
 
 class GaleriController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    // Menampilkan daftar galeri di halaman admin
     public function index()
     {
-        //
-        $galeris = galeri::all();
-        return view('admin.galeri', compact('galeris'));
+        $galeris = Galeri::all(); // Ambil semua galeri
+        return view('admin.galeri', compact('galeris')); // Kirim data ke view
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    // Menampilkan form untuk menambahkan galeri baru
     public function create()
     {
-        //
         return view('admin.create_galeri');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    // Menyimpan galeri baru ke database
     public function store(Request $request)
     {
-        //
-       $request->validate([
-        'judul'=> 'required|string',
-        'keterangan'=> 'required|string',
-        'file'=> 'required|mimes:jpg,jpeg,png,mp4,avi,mov|max:20480', // max 20MB
-        'kategori'=> 'required|in:foto,video',
-        'tanggal'=> 'required|date',
-    ]);
+        // Validasi input
+        $request->validate([
+            'judul' => 'required|string',
+            'keterangan' => 'required|string',
+            'file' => 'required|mimes:jpg,jpeg,png,mp4,avi,mov|max:20480', // max 20MB
+            'kategori' => 'required|in:foto,video',
+            'tanggal' => 'required|date',
+        ]);
 
         if ($request->hasFile('file')) {
-        $fileName = time().'.'.$request->file->extension();
+            $fileName = time() . '.' . $request->file->extension();
 
-        if ($request->kategori == 'foto') {
+            // Upload file ke folder sesuai kategori
             $request->file->move(public_path('asset/image'), $fileName);
-        } else {
-            $request->file->move(public_path('asset/image'), $fileName);
+
+            // Simpan data galeri
+            Galeri::create([
+                'judul'      => $request->judul,
+                'keterangan' => $request->keterangan,
+                'file'       => $fileName,
+                'kategori'   => $request->kategori,
+                'tanggal'    => $request->tanggal,
+            ]);
         }
 
-        galeri::create([
-            'judul'      => $request->judul,
-            'keterangan' => $request->keterangan,
-            'file'       => $fileName,
-            'kategori'   => $request->kategori,
-            'tanggal'    => $request->tanggal,
-        ]);
-    }
-
+        // Redirect dengan pesan sukses
         return redirect()->route('Admin.galeri.index')->with('success','Berhasil ditambahkan');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    // public function show(galeri $galeri)
-    // {
-    //     //
-    // }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
+    // Menampilkan form edit galeri
     public function edit($id)
     {
-        //
-        $galeri = galeri::find($id);
-        return view('admin.edit_galeri',compact('galeri'));
+        $galeri = Galeri::find($id);
+        return view('admin.edit_galeri', compact('galeri'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+    // Memperbarui galeri yang sudah ada
     public function update(Request $request, $id)
     {
-        //
-       $validate = $request->validate([
-        'judul'=> 'required|string',
-        'keterangan'=> 'required|string',
-        'file'=> 'nullable|mimes:jpg,jpeg,png,mp4,avi,mov|max:20480',
-        'kategori'=> 'required|in:foto,video',
-        'tanggal'=> 'required|date',
-    ]);
+        // Validasi input
+        $validate = $request->validate([
+            'judul' => 'required|string',
+            'keterangan' => 'required|string',
+            'file' => 'nullable|mimes:jpg,jpeg,png,mp4,avi,mov|max:30480',
+            'kategori' => 'required|in:foto,video',
+            'tanggal' => 'required|date',
+        ]);
 
-    $galeri = galeri::find($id);
+        $galeri = Galeri::find($id);
 
-    if ($request->hasFile('file')) {
-        $fileName = time().'.'.$request->file->extension();
+        // Jika ada file baru, hapus file lama dan upload file baru
+        if ($request->hasFile('file')) {
+            $oldPath = public_path('asset/' . $galeri->kategori . '/' . $galeri->file);
+            if ($galeri->file && file_exists($oldPath)) {
+                unlink($oldPath);
+            }
 
-        if ($request->kategori == 'foto') {
-            $request->file->move(public_path('asset/image'), $fileName);
-        } else {
-            $request->file->move(public_path('asset/image'), $fileName);
+            $fileName = time() . '.' . $request->file('file')->extension();
+            $request->file('file')->move(public_path('asset/image'), $fileName);
+            $validate['file'] = $fileName;
         }
 
-        $validate['file'] = $fileName;
+        // Update data galeri
+        $galeri->update($validate);
+
+        // Redirect dengan pesan sukses
+        return redirect()->route('Admin.galeri.index')->with('success','Berhasil di Ubah');
     }
 
-    $galeri->update($validate);
-
-        return redirect()->route('Admin.galeri.index')->with('success','Berhasil di update');
-
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
+    // Menghapus galeri
     public function destroy($id)
     {
-        //
-        $galeri = galeri::find($id);
+        $galeri = Galeri::find($id);
         $galeri->delete();
+
         return redirect()->route('Admin.galeri.index')->with('success','Berhasil di hapus');
     }
 
+    // Menampilkan galeri di halaman publik (frontend)
     public function galeri()
     {
-        $galeris = galeri::all();
+        $galeris = Galeri::all();
         return view('galeri', compact('galeris'));
     }
 }

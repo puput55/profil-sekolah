@@ -2,44 +2,37 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\siswa;
+use App\Models\Siswa;
 use Illuminate\Http\Request;
 
 class SiswaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    // Menampilkan daftar siswa di halaman admin
     public function index()
     {
-        //
-        $siswas = siswa::all();
-        return view('admin.siswa', compact('siswas'));
+        $siswas = Siswa::all(); // Ambil semua data siswa
+        return view('admin.siswa', compact('siswas')); // Kirim data ke view
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    // Menampilkan form untuk menambahkan siswa baru
     public function create()
     {
-        //
         return view('admin.create_siswa');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    // Menyimpan siswa baru ke database
     public function store(Request $request)
     {
-        //
+        // Validasi input
         $request->validate([
-            'nisn'=> 'required|string',
+            'nisn' => 'required|string',
             'nama_siswa' => 'required|string',
             'jenis_kelamin' => 'required|string',
             'tahun_masuk' => 'required|min:4',
         ]);
 
-        siswa::create([
+        // Simpan data siswa
+        Siswa::create([
             'nisn' => $request->nisn,
             'nama_siswa' => $request->nama_siswa,
             'jenis_kelamin' => $request->jenis_kelamin,
@@ -47,41 +40,28 @@ class SiswaController extends Controller
         ]);
 
         return redirect()->route('Admin.siswa.index')->with('success','Berhasil di tambahkan');
-
     }
 
-    /**
-     * Display the specified resource.
-     */
-    // public function show(siswa $siswa)
-    // {
-    //     //
-    // }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
+    // Menampilkan form edit siswa
     public function edit($id)
     {
-        //
-        $siswa = siswa::find($id);
+        $siswa = Siswa::find($id);
         return view('admin.edit_siswa', compact('siswa'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+    // Memperbarui data siswa yang sudah ada
     public function update(Request $request, $id)
     {
-        //
+        // Validasi input
         $request->validate([
-            'nisn'=> 'required|string',
+            'nisn' => 'required|string',
             'nama_siswa' => 'required|string',
             'jenis_kelamin' => 'required|string',
             'tahun_masuk' => 'required|digits:4',
         ]);
 
-        $siswa = siswa::find($id);
+        $siswa = Siswa::find($id);
+
         $data = [
             'nisn' => $request->nisn,
             'nama_siswa' => $request->nama_siswa,
@@ -90,22 +70,22 @@ class SiswaController extends Controller
         ];
 
         $siswa->update($data);
+
         return redirect()->route('Admin.siswa.index')->with('success','Berhasil di update');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+    // Menghapus data siswa
     public function destroy($id)
     {
-        //
-        $siswa = siswa::find($id);
+        $siswa = Siswa::find($id);
         $siswa->delete();
         return redirect()->route('Admin.siswa.index')->with('success','Berhasil di hapus');
     }
+
+    // Menampilkan daftar siswa di halaman frontend
     public function siswa()
     {
-        $siswas = siswa::all();
+        $siswas = Siswa::all();
         return view('siswa', compact('siswas'));
     }
 }

@@ -6,10 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class ProfilSekolah extends Model
 {
-    //
+    // Nama tabel di database
     protected $table = 'profil_sekolahs';
-    protected $primaryKey ='id_profil';
+
+    // Primary key tabel
+    protected $primaryKey = 'id_profil';
+
+    // Menonaktifkan timestamp otomatis (created_at, updated_at)
     public $timestamps = false;
+
+    // Kolom yang bisa diisi secara massal (mass assignable)
     protected $fillable = [
         'id_profil',
         'nama_sekolah',

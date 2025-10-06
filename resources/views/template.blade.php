@@ -37,12 +37,15 @@
             background-color:#ff9800;
             color:#fff;
         }
+        .navbar{
+            margin-bottom: 0 !important;
+        }
     </style>
 </head>
 <body>
 
    {{-- Navbar Atas: Logo + Telepon & Email --}}
-    <nav class="navbar navbar-expand-sm bg-light fixed-top">
+    <nav class="navbar navbar-expand-sm bg-light fixed-top mb-0">
         <div class="container-fluid d-flex justify-content-between align-items-center">
 
             {{-- Logo Sekolah --}}
@@ -62,7 +65,7 @@
                     </span>
                     <div>
                         <div style="font-size:1rem; color:gray;">Telepon</div>
-                        <div style="font-size:1.2rem; font-weight:bold;">+62 22 6123806</div>
+                        <div style="font-size:1.2rem; font-weight:bold;">031 21001716</div>
                     </div>
                 </div>
                 <div class="d-flex align-items-center gap-2">
@@ -71,7 +74,7 @@
                     </span>
                     <div>
                         <div style="font-size:1rem; color:gray;">Alamat Email</div>
-                        <div style="font-size:1.2rem; font-weight:bold;">info@sman9bdg.sch.id</div>
+                        <div style="font-size:1.2rem; font-weight:bold;">info@smaxshavierus.sch.id</div>
                     </div>
                 </div>
             </div>
@@ -80,7 +83,7 @@
 
 
     {{-- Navbar Menu --}}
-    <nav class="navbar navbar-expand-sm py-3 fixed-top" style="background-color:#001f3f; top:80px; z-index:1040;">
+    <nav class="navbar navbar-expand-sm py-3 fixed-top mt-0" style="background-color:#001f3f; top:70px; z-index:1040;">
         <div class="container-fluid">
             <button class="navbar-toggler bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
                 <span class="navbar-toggler-icon"></span>
@@ -117,6 +120,66 @@
     {{-- Konten --}}
     @yield('content')
 
+    {{-- ==================== FOOTER ==================== --}}
+<footer class="container-fluid p-5 m-0" style="background-color: #e8eaec" data-aos="fade-up">
+    <div class="row">
+        {{-- Logo & Nama Sekolah --}}
+        <nav class="navbar navbar-expand-sm bg-light-grey">
+            <div class="container-fluid">
+                <a class="navbar-brand d-flex align-items-center" href="#">
+                    <img src="{{ asset('storage/asset/image/sma.png') }}" alt="Logo"
+                         style="width:60px; height:auto;" class="rounded-pill me-2">
+                    <span style="color:#001f3f; font-size:1.5rem; font-family:Georgia, serif; font-weight:bold;">
+                        SMA TIRTA XSHAVIERUS
+                    </span>
+                </a>
+            </div>
+        </nav>
+
+        {{-- Alamat --}}
+        <div class="col-md-4 mb-4">
+            <p class="mt-3" style="color: #001f3f;">Chelsea Widya, Tirta raya<br>Indonesia, 60213</p>
+            <p class="mt-3" style="color: #001f3f;">Telepon : 031 21001716</p>
+        </div>
+
+        {{-- Navigasi --}}
+        <div class="col-md-3 mb-3">
+            <h4 style="color: #001f3f;">Jelajahi</h4>
+            <ul class="list-unstyled">
+                <li><a href="{{route('ps')}}" class="text-decoration-none" style="color:#001f3f;">Tentang Kami</a></li>
+                <li><a href="{{route('galeri')}}" class="text-decoration-none" style="color:#001f3f;">Galeri</a></li>
+                <li><a href="{{route('guru')}}" class="text-decoration-none" style="color:#001f3f;">Staf Pengajar</a></li>
+            </ul>
+        </div>
+
+        {{-- Tautan Cepat --}}
+        <div class="col-md-3 mb-3">
+            <h4 style="color: #001f3f;">Tautan Cepat</h4>
+            <ul class="list-unstyled">
+                <li><a href="{{ route('informasi') }}" class="text-decoration-none" style="color:#001f3f;">Informasi Sekolah</a></li>
+                <li><a href="{{route('home')}}" class="text-decoration-none" style="color:#001f3f;">Hubungi Kami</a></li>
+            </ul>
+        </div>
+
+        {{-- Jam Kerja + Sosmed --}}
+        <div class="col-md-2 mb-3">
+            <h4 style="color: #001f3f">Jam Kerja</h4>
+            <ul class="list-unstyled">
+                <li>Senin-Jumat</li>
+                <li>06.30-15.30</li>
+            </ul>
+            <div class="d-flex gap-4 mt-3">
+                <a href="https://www.instagram.com/officialsmkypc?utm_source=ig_web_button_share_sheet&igsh=bnZxMjNycDI4bXhy" style="color: #001f3f"><i class="fa-brands fa-instagram"></i></a>
+                <a href="https://www.facebook.com/share/1YvLXJoehn/" style="color: #001f3f" ><i class="fa-brands fa-facebook"></i></a>
+                <a href="http://www.youtube.com/@smkypctasikmalaya" style="color: #001f3f"><i class="fa-brands fa-youtube"></i></a>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="text-center">
+        <p class="mb-0">Copyright © 2025 SMA Xshavierus. All Right Reserved.</p>
+    </div>
+</footer>
     {{-- Script --}}
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>AOS.init();</script>

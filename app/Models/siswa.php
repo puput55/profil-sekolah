@@ -4,12 +4,18 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class siswa extends Model
+class Siswa extends Model
 {
-    //
+    // Nama tabel di database
     protected $table = 'siswas';
+
+    // Primary key tabel
     protected $primaryKey = 'id_siswa';
+
+    // Menonaktifkan timestamp otomatis (created_at, updated_at)
     public $timestamps = false;
+
+    // Kolom yang bisa diisi secara massal (mass assignable)
     protected $fillable = [
         'id_siswa',
         'nisn',

@@ -2,115 +2,104 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\berita;
+use App\Models\Berita;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class BeritaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    // Menampilkan daftar berita di halaman admin
     public function index()
     {
-        //
-        $beritas = berita::all();
-        return view('admin.berita', compact('beritas'));
+        $beritas = Berita::orderBy('tanggal', 'desc')->get();
+        return view('berita.index', compact('beritas'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    // Menampilkan form tambah berita
     public function create()
     {
-        //
         return view('admin.create_berita');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    // Simpan berita baru
     public function store(Request $request)
     {
-        //
         $request->validate([
-            'judul'=> 'required|string|max:255',
+            'judul' => 'required|string|max:255',
             'isi' => 'required|string',
-            'gambar'=>'required|image',
+            'gambar' => 'required|image',
         ]);
-        $gambar = time().'.'.$request->gambar->extension();
+
+        // Upload gambar
+        $gambar = time() . '.' . $request->gambar->extension();
         $request->gambar->move(public_path('asset/image'), $gambar);
 
-        berita::create([
-            'judul'=>$request->judul,
-            'isi'=>$request->isi,
-            'tanggal'=>now(),
-            'gambar'=>$gambar,
-            'id_user'=>1, //Auth::user()->id
+        // Simpan ke database
+        Berita::create([
+            'judul' => $request->judul,
+            'isi' => $request->isi,
+            'tanggal' => date('Y-m-d'),
+            'gambar' => $gambar,
+            'id_user' => Auth::check() ? Auth::user()->id_user : 1,
         ]);
 
-        return redirect()->route('Admin.berita.index')->with('success', 'Berita created successfully');
+        return redirect()->route('Admin.berita.index')->with('success', 'Berita berhasil ditambahkan.');
     }
 
-    /**
-     * Display the specified resource.
-     */
+    // Tampilkan berita publik
     public function show($id)
     {
-        $berita = berita::find($id);
+        $berita = Berita::findOrFail($id);
         return view('berita-tampil', compact('berita'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+    // Form edit berita
     public function edit($id)
     {
-        //
-        $berita = berita::find($id);
+        $berita = Berita::findOrFail($id);
         return view('admin.edit_berita', compact('berita'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+    // Update berita
     public function update(Request $request, $id)
     {
-        //
         $request->validate([
-            'judul'=>'required|string|max:255',
-            'isi'=>'required|string',
-            'tanggal'=>'required|date',
-            'gambar'=>'required|image',
+            'judul' => 'required|string|max:255',
+            'isi' => 'required|string',
+            'gambar' => 'nullable|image',
         ]);
-        $berita = berita::find($id);
 
-        if($request->hasFile('gambar')){
-            $gambar = time().'.'.$request->gambar->extension();
+        $berita = Berita::findOrFail($id);
+
+        // Jika ada gambar baru
+        if ($request->hasFile('gambar')) {
+            $gambar = time() . '.' . $request->gambar->extension();
             $request->gambar->move(public_path('asset/image'), $gambar);
             $berita->gambar = $gambar;
         }
+
+        // Update data
         $berita->judul = $request->judul;
         $berita->isi = $request->isi;
-        $berita->tanggal = $request->tanggal;
+        $berita->tanggal = date('Y-m-d'); // update tanggal otomatis
         $berita->save();
-        return redirect()->route('Admin.berita.index')->with('success','Berita berhasil di update');
+
+        return redirect()->route('Admin.berita.index')->with('success', 'Berita berhasil diperbarui.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+    // Hapus berita
     public function destroy($id)
     {
-        //
-        $berita = berita::find($id);
+        $berita = Berita::findOrFail($id);
         $berita->delete();
-        return redirect()->route('Admin.berita.index')->with('success', 'Berita Berhasil dihapus');
+
+        return redirect()->route('Admin.berita.index')->with('success', 'Berita berhasil dihapus.');
     }
 
+    // Tampilkan berita di halaman publik
     public function berita()
     {
-        $beritas = berita::all();
+        $beritas = Berita::orderBy('tanggal', 'desc')->get();
         return view('berita', compact('beritas'));
     }
 }

@@ -2,50 +2,44 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
+    // Menggunakan trait HasFactory untuk factory pembuatan data
     use HasFactory;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
+    // Nama tabel di database
     protected $table = 'users';
+
+    // Primary key tabel
     protected $primaryKey = 'id_user';
+
+    // Tipe primary key
     protected $keyType = 'int';
+
+    // Kolom yang bisa diisi secara massal (mass assignable)
     protected $fillable = [
         'username',
         'password',
         'role',
     ];
 
+    // Relasi User ke Berita (satu user bisa memiliki banyak berita)
     public function berita()
     {
         return $this->hasMany(Berita::class, 'id_user');
     }
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
+    // Kolom yang disembunyikan saat serialisasi, misal untuk API
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
+    // Contoh pengaturan cast (dikomentari, bisa diaktifkan jika perlu)
     // protected function casts(): array
     // {
     //     return [

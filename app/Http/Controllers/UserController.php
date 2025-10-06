@@ -125,9 +125,10 @@ class UserController extends Controller
     // halaman home
     public function home()
     {
-        $ekskuls = ekstrakulikuler::take(4)->get();
+        $ekskuls = ekstrakulikuler::take(8)->get();
         $profil = ProfilSekolah::first();
-        $beritas = berita::take(4)->get();
+        // Ambil 8 berita terbaru (urut dari tanggal terbaru)
+        $beritas = Berita::orderBy('tanggal', 'desc')->take(8)->get();
 
            // ambil jumlah guru & siswa
         $jumlahGuru  = guru::count();

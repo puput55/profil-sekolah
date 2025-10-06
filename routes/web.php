@@ -13,7 +13,7 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/',[UserController::class,'home'])->name('home');
-Route::get('/informasi-sekolah', function () {
+Route::get('/informasi/sekolah', function () {
     return view('informasi-sekolah');
 })->name('informasi');
 
