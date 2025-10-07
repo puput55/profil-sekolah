@@ -93,7 +93,7 @@
     <div class="content">
         {{-- Logo Sekolah --}}
         <nav class="mb-3">
-            <img src="{{ asset('storage/asset/image/sma.png') }}" alt="Logo"
+            <img src="{{ asset('storage/asset/image/logo.jpeg') }}" alt="Logo"
                  style="width:60px; height:auto;" class="rounded-pill me-2">
             <span style="color:#001f3f; font-size:1.5rem; font-family:Georgia, serif; font-weight:bold;">
                 SMA TIRTA XSHAVIERUS

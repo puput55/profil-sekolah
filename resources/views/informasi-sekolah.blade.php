@@ -10,7 +10,7 @@
                 An International Baccalaureate (IB) Continuum School <br>
                 and Fully Accredited by WASC
             </p>
-            <img src="{{ asset('storage/asset/image/poster.png') }}"
+            <img src="{{ asset('storage/asset/image/info.jpeg') }}"
                  alt="Poster Informasi Sekolah"
                  class="img-fluid shadow-lg rounded-4"
                  style="max-width: 900px; height: auto;">

@@ -27,7 +27,7 @@ class GaleriController extends Controller
         $request->validate([
             'judul' => 'required|string',
             'keterangan' => 'required|string',
-            'file' => 'required|mimes:jpg,jpeg,png,mp4,avi,mov|max:20480', // max 20MB
+            'file' => 'required|mimes:jpg,jpeg,png,mp4,avi,mov|max:30480', // max 20MB
             'kategori' => 'required|in:foto,video',
             'tanggal' => 'required|date',
         ]);

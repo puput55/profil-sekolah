@@ -14,12 +14,18 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
+    /**
+     * Tampilkan halaman login.
+     */
     public function showLoginForm()
     {
         return view('login');
     }
 
-    // proses login
+    /**
+     * Proses login user berdasarkan username dan password.
+     * Melakukan validasi input, autentikasi, dan redirect sesuai role.
+     */
     public function login(Request $request)
     {
         $request->validate([
@@ -27,11 +33,11 @@ class UserController extends Controller
             'password' => 'required',
         ]);
 
-        // cek login berdasarkan username
+        // Cek login berdasarkan username dan password
         if (Auth::attempt(['username' => $request->username, 'password' => $request->password])) {
             $request->session()->regenerate();
 
-            // redirect sesuai role
+            // Redirect ke halaman sesuai role
             if (Auth::user()->role == 'Admin') {
                 return redirect()->route('Admin.dashboard');
             } elseif (Auth::user()->role == 'Operator') {
@@ -41,10 +47,13 @@ class UserController extends Controller
             }
         }
 
+        // Jika login gagal
         return back()->with('error', 'Username atau password salah.');
     }
 
-    // logout
+    /**
+     * Logout user, hapus session, dan redirect ke halaman login.
+     */
     public function logout(Request $request)
     {
         Auth::logout();
@@ -54,19 +63,30 @@ class UserController extends Controller
         return redirect()->route('login')->with('success', 'Berhasil logout.');
     }
 
-    // ========== CRUD USER ==========
+    // ============================================================
+    // ====================== CRUD USER ===========================
+    // ============================================================
 
+    /**
+     * Menampilkan daftar semua user.
+     */
     public function index()
     {
         $users = User::all();
         return view('admin.user', compact('users'));
     }
 
+    /**
+     * Menampilkan form untuk menambah user baru.
+     */
     public function create()
     {
         return view('admin.create_user');
     }
 
+    /**
+     * Menyimpan data user baru ke database setelah validasi.
+     */
     public function store(Request $request)
     {
         $request->validate([
@@ -84,12 +104,18 @@ class UserController extends Controller
         return redirect()->route('Admin.user.index')->with('success', 'User created successfully');
     }
 
+    /**
+     * Menampilkan form edit untuk user berdasarkan ID.
+     */
     public function edit($id)
     {
         $user = User::find($id);
         return view('admin.edit_user', compact('user'));
     }
 
+    /**
+     * Memperbarui data user berdasarkan ID dengan validasi input.
+     */
     public function update(Request $request, $id)
     {
         $request->validate([
@@ -100,21 +126,27 @@ class UserController extends Controller
 
         $user = User::find($id);
 
+        // Siapkan data yang akan diupdate
         $data = [
             'username' => $request->username,
-            'password' => $user->password,
+            'password' => $user->password, // default: tetap gunakan password lama
             'role' => $request->role,
         ];
 
+        // Jika password diisi, update password baru
         if ($request->filled('password')) {
             $data['password'] = Hash::make($request->password);
         }
 
+        // Update data user
         $user->update($data);
 
         return redirect()->route('Admin.user.index')->with('success', 'User updated successfully');
     }
 
+    /**
+     * Menghapus user berdasarkan ID.
+     */
     public function destroy($id)
     {
         $user = User::find($id);
@@ -122,18 +154,19 @@ class UserController extends Controller
         return redirect()->route('Admin.user.index')->with('success', 'User deleted successfully');
     }
 
-    // halaman home
+    /**
+     * Menampilkan halaman utama (home) untuk user biasa.
+     * Menampilkan data ekskul, profil sekolah, berita terbaru,
+     * serta jumlah guru dan siswa.
+     */
     public function home()
     {
-        $ekskuls = ekstrakulikuler::take(8)->get();
-        $profil = ProfilSekolah::first();
-        // Ambil 8 berita terbaru (urut dari tanggal terbaru)
-        $beritas = Berita::orderBy('tanggal', 'desc')->take(8)->get();
+        $ekskuls = ekstrakulikuler::take(8)->get(); // ambil 8 data ekskul
+        $profil = ProfilSekolah::first(); // ambil profil sekolah
+        $beritas = Berita::orderBy('tanggal', 'desc')->take(8)->get(); // ambil 8 berita terbaru
+        $jumlahGuru  = guru::count(); // hitung total guru
+        $jumlahSiswa = siswa::count(); // hitung total siswa
 
-           // ambil jumlah guru & siswa
-        $jumlahGuru  = guru::count();
-        $jumlahSiswa = siswa::count();
-        return view('home', compact('ekskuls','profil','beritas','jumlahGuru','jumlahSiswa'));
-
+        return view('home', compact('ekskuls', 'profil', 'beritas', 'jumlahGuru', 'jumlahSiswa'));
     }
 }

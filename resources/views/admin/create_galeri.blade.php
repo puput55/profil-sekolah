@@ -28,7 +28,7 @@
             <div class="mb-3">
                 <label class="form-label">File</label>
                 <input type="file" name="file" class="form-control" id="file" required>
-                <small class="text-muted">Format: jpg, jpeg, png, mp4, avi, mov (maks. 20MB)</small>
+                <small class="text-muted">Format: jpg, jpeg, png, mp4, avi, mov (maks. 30MB)</small>
             </div>
 
             {{-- Pilih Kategori --}}
@@ -49,7 +49,7 @@
 
             {{-- Tombol Aksi --}}
             <div class="mb-3">
-                <button type="submit" class="btn btn-primary">Simpan</button>
+                <button type="submit" class="btn text-white" style="background-color: #001f3f;">Simpan</button>
                 <a href="{{ route('Admin.galeri.index') }}" class="btn btn-secondary">Batal</a>
             </div>
         </form>

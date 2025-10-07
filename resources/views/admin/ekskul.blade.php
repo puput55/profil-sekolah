@@ -3,7 +3,7 @@
 
 <div class="card shadow p-2" style="background-color: #f1b434; border-radius: 10px;">
 
-    {{-- ==================== ALERT VALIDASI ERROR ==================== --}}
+    {{-- ALERT VALIDASI ERROR --}}
     @if ($errors->any())
         <div class="alert alert-danger">
             <ul>
@@ -14,7 +14,7 @@
         </div>
     @endif
 
-    {{-- ==================== ALERT SUCCESS ==================== --}}
+    {{-- ALERT SUCCESS --}}
     @if (session('success'))
         <div class="alert alert-success alert-dismissible" role="alert">
             {{ session('success') }}
@@ -23,17 +23,17 @@
     @endif
 
     <div class="card-body">
-        {{-- Judul + Tombol Tambah --}}
+        {{-- Header --}}
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h4 class="mb-0">Data Ekstrakurikuler</h4>
-            <a href="{{ route('Admin.ekskul.create') }}" class="btn btn-primary">
+            <a href="{{ route('Admin.ekskul.create') }}" class="btn text-white" style="background-color: #001f3f;">
                 <i class="fa fa-plus"></i> Tambah Ekskul
             </a>
         </div>
 
-        {{-- Tabel Data Ekskul --}}
+        {{-- Tabel Data --}}
         <div class="table-responsive">
-            <table class="table table-bordered table-hover align-middle">
+            <table class="table table-bordered align-middle">
                 <thead class="table-dark text-center">
                     <tr>
                         <th width="5%">ID</th>
@@ -46,54 +46,43 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse ($ekskuls as $ekskul)
-                        <tr>
-                            {{-- ID --}}
-                            <td class="text-center">{{ $ekskul->id_ekskul }}</td>
-
-                            {{-- Nama Ekskul --}}
-                            <td>{{ $ekskul->nama_ekskul }}</td>
-
-                            {{-- Pembina --}}
-                            <td>{{ $ekskul->pembina }}</td>
-
-                            {{-- Jadwal --}}
-                            <td>{{ $ekskul->jadwal_latihan }}</td>
-
-                            {{-- Deskripsi singkat --}}
-                            <td>{{ Str::limit($ekskul->deskripsi, 50, '...') }}</td>
-
-                            {{-- Gambar --}}
-                            <td class="text-center">
-                                <img src="{{ asset('asset/image/'.$ekskul->gambar) }}"
-                                     alt="{{ $ekskul->nama_ekskul }}"
-                                     class="img-thumbnail"
-                                     style="width: 120px; height: 100px; object-fit: cover;">
-                            </td>
-
-                            {{-- Tombol Aksi --}}
-                            <td class="text-center">
-                                <a href="{{ route('Admin.ekskul.edit', $ekskul->id_ekskul) }}"
-                                   class="btn btn-sm btn-warning">
-                                   <i class="fa fa-edit"></i> Edit
-                                </a>
-                                <form action="{{ route('Admin.ekskul.delete', $ekskul->id_ekskul) }}"
-                                      method="POST" style="display:inline;">
-                                    @csrf
-                                    @method('GET')
-                                    <button type="submit"
-                                            class="btn btn-sm btn-danger"
-                                            onclick="return confirm('Yakin ingin menghapus data ini?')">
-                                        <i class="fa fa-trash"></i> Hapus
-                                    </button>
-                                </form>
-                            </td>
-                        </tr>
-                    @empty
+                    @if(count($ekskuls) > 0)
+                        @foreach ($ekskuls as $ekskul)
+                            <tr>
+                                <td class="text-center">{{ $ekskul->id_ekskul }}</td>
+                                <td>{{ $ekskul->nama_ekskul }}</td>
+                                <td>{{ $ekskul->pembina }}</td>
+                                <td>{{ $ekskul->jadwal_latihan }}</td>
+                                <td>{{ Str::limit($ekskul->deskripsi, 50, '...') }}</td>
+                                <td class="text-center">
+                                    <img src="{{ asset('asset/image/' . $ekskul->gambar) }}"
+                                         alt="{{ $ekskul->nama_ekskul }}"
+                                         class="img-thumbnail"
+                                         style="width: 120px; height: 100px; object-fit: cover;">
+                                </td>
+                                <td class="text-center">
+                                    <a href="{{ route('Admin.ekskul.edit', $ekskul->id_ekskul) }}"
+                                       class="btn btn-sm btn-warning">
+                                       <i class="fa fa-edit"></i> Edit
+                                    </a>
+                                    <form action="{{ route('Admin.ekskul.delete', $ekskul->id_ekskul) }}"
+                                          method="POST" style="display:inline;">
+                                        @csrf
+                                        @method('GET')
+                                        <button type="submit"
+                                                class="btn btn-sm btn-danger"
+                                                onclick="return confirm('Yakin ingin menghapus data ini?')">
+                                            <i class="fa fa-trash"></i> Hapus
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        @endforeach
+                    @else
                         <tr>
                             <td colspan="7" class="text-center text-muted">Belum ada data ekstrakurikuler.</td>
                         </tr>
-                    @endforelse
+                    @endif
                 </tbody>
             </table>
         </div>

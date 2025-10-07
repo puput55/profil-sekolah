@@ -5,7 +5,7 @@
 {{-- ==================== HERO SECTION ==================== --}}
 <div class="container-fluid w-100 p-0 m-0" data-aos="fade-down">
     <div class="position-relative text-white"
-         style="background-image: url('{{ asset('storage/asset/image/high-school.jpg') }}');
+         style="background-image: url('{{ asset('storage/asset/image/background.jpeg') }}');
                 background-size: cover; background-position: center; height: 100vh;">
         <div class="d-flex flex-column justify-content-center h-100"
              style="background-color: rgba(0,0,0,0.5);">

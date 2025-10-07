@@ -8,6 +8,17 @@
             <h4 class="mb-0 mt-0">Tambah Guru</h4>
         </div>
 
+        {{-- ==================== ALERT VALIDASI ERROR ==================== --}}
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul class="mb-0">
+                    @foreach ($errors->all() as $item)
+                        <li>{{ $item }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         {{-- ==================== FORM TAMBAH GURU ==================== --}}
         <form action="{{ route('Admin.guru.store') }}" method="POST" enctype="multipart/form-data">
             @csrf {{-- Token keamanan Laravel --}}
@@ -38,7 +49,7 @@
 
             {{-- Tombol Aksi --}}
             <div class="mb-3">
-                <button type="submit" class="btn btn-primary">Tambah</button>
+                <button type="submit" class="btn text-white" style="background-color: #001f3f;">Tambah</button>
                 <a href="{{ route('Admin.guru.index') }}" class="btn btn-secondary">Batal</a>
             </div>
         </form>

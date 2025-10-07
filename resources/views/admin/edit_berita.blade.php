@@ -62,7 +62,7 @@
 
             {{-- Tombol Aksi --}}
             <div class="mt-3">
-                <button type="submit" class="btn btn-primary">
+                <button type="submit" class="btn text-white" style="background-color: #001f3f;">
                     <i class="fa fa-save"></i> Update
                 </button>
                 <a href="{{ route('Admin.berita.index') }}" class="btn btn-secondary">

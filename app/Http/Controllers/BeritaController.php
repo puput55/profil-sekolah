@@ -12,7 +12,7 @@ class BeritaController extends Controller
     public function index()
     {
         $beritas = Berita::orderBy('tanggal', 'desc')->get();
-        return view('berita.index', compact('beritas'));
+        return view('admin.berita', compact('beritas'));
     }
 
     // Menampilkan form tambah berita
@@ -38,7 +38,7 @@ class BeritaController extends Controller
         Berita::create([
             'judul' => $request->judul,
             'isi' => $request->isi,
-            'tanggal' => date('Y-m-d'),
+            'tanggal' => $request->tanggal,
             'gambar' => $gambar,
             'id_user' => Auth::check() ? Auth::user()->id_user : 1,
         ]);
@@ -81,7 +81,7 @@ class BeritaController extends Controller
         // Update data
         $berita->judul = $request->judul;
         $berita->isi = $request->isi;
-        $berita->tanggal = date('Y-m-d'); // update tanggal otomatis
+        $berita->tanggal = $request->tanggal; // update tanggal otomatis
         $berita->save();
 
         return redirect()->route('Admin.berita.index')->with('success', 'Berita berhasil diperbarui.');

@@ -13,7 +13,7 @@
 
     <style>
         body {
-            background: url("{{ asset('storage/asset/image/high-school.jpg') }}") no-repeat center center fixed;
+            background: url("{{ asset('storage/asset/image/background.jpeg') }}") no-repeat center center fixed;
             background-size: cover;
         }
         .login-card {
@@ -37,7 +37,7 @@
             <div class="login-card text-center" data-aos="zoom-in" data-aos-duration="1000">
 
                 <!-- Logo -->
-                <img src="{{ asset('storage/asset/image/sma.png') }}"
+                <img src="{{ asset('storage/asset/image/logo.jpeg') }}"
                      alt="Logo Sekolah"
                      class="rounded-circle bg-white p-2"
                      data-aos="fade-down"

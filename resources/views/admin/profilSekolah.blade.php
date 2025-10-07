@@ -1,9 +1,10 @@
 @extends('admin.template')
 
 @section('content')
-<div class="card shadow p-2" style="background-color: #f1b434; border-radius: 10px;">
 
-    {{-- ==================== ALERT VALIDASI ERROR ==================== --}}
+<div class="card shadow p-2" style="background-color:#f1b434; border-radius:10px;">
+
+    {{-- ALERT ERROR --}}
     @if ($errors->any())
         <div class="alert alert-danger">
             <ul>
@@ -14,7 +15,7 @@
         </div>
     @endif
 
-    {{-- ==================== ALERT SUCCESS ==================== --}}
+    {{-- ALERT SUCCESS --}}
     @if (session('success'))
         <div class="alert alert-success alert-dismissible" role="alert">
             {{ session('success') }}
@@ -22,17 +23,16 @@
         </div>
     @endif
 
-    {{-- ==================== ISI KONTEN ==================== --}}
     <div class="card-body">
-        {{-- Judul + Tombol Tambah --}}
+        {{-- HEADER + TOMBOL TAMBAH PROFIL --}}
         <div class="d-flex justify-content-between align-items-center mb-3">
-            <h4 class="mb-0">Profil Sekolah</h4>
-            <a href="{{ route('Admin.ps.create') }}" class="btn btn-primary">
-                <i class="fa fa-plus"></i> Tambah
+            <h4>Profil Sekolah</h4>
+            <a href="{{ route('Admin.ps.create') }}" class="btn text-white" style="background-color:#001f3f;">
+                <i class="fa fa-plus"></i> Tambah Profil
             </a>
         </div>
 
-        {{-- Tabel Data Profil Sekolah --}}
+        {{-- TABEL PROFIL SEKOLAH --}}
         <table class="table table-bordered table-hover align-middle">
             <thead class="table-dark text-center">
                 <tr>
@@ -51,64 +51,26 @@
                 </tr>
             </thead>
             <tbody>
-                @forelse ($profils as $profilSekolah)
-                <tr>
-                    {{-- ID --}}
-                    <td class="text-center">{{ $profilSekolah->id_profil }}</td>
-
-                    {{-- Nama Sekolah --}}
-                    <td>{{ $profilSekolah->nama_sekolah }}</td>
-
-                    {{-- Kepala Sekolah --}}
-                    <td>{{ $profilSekolah->kepala_sekolah }}</td>
-
-                    {{-- Foto Kepala Sekolah --}}
-                    <td>
-                        <img src="{{ asset('asset/image/' . $profilSekolah->foto) }}"
-                             alt="Foto Kepala Sekolah"
-                             class="img-thumbnail"
-                             style="height: 80px; width: 80px; object-fit: cover;">
-                    </td>
-
-                    {{-- Logo Sekolah --}}
-                    <td>
-                        <img src="{{ asset('asset/image/' . $profilSekolah->logo) }}"
-                             alt="Logo Sekolah"
-                             class="img-thumbnail"
-                             style="height: 80px; width: 80px; object-fit: cover;">
-                    </td>
-
-                    {{-- NPSN --}}
-                    <td>{{ $profilSekolah->npsn }}</td>
-
-                    {{-- Alamat --}}
-                    <td>{{ Str::limit($profilSekolah->alamat, 20, '...') }}</td>
-
-                    {{-- Kontak --}}
-                    <td>{{ $profilSekolah->kontak }}</td>
-
-                    {{-- Visi Misi --}}
-                    <td>{{ Str::limit($profilSekolah->visi_misi, 30, '...') }}</td>
-
-                    {{-- Tahun Berdiri --}}
-                    <td>{{ $profilSekolah->tahun_berdiri }}</td>
-
-                    {{-- Deskripsi --}}
-                    <td>{{ Str::limit($profilSekolah->deskripsi, 40, '...') }}</td>
-
-                    {{-- Aksi --}}
-                    <td class="text-center">
-                        <a href="{{ route('Admin.ps.edit', $profilSekolah->id_profil) }}"
-                           class="btn btn-sm btn-warning">
-                            <i class="fa fa-edit"></i> Edit
-                        </a>
-                    </td>
-                </tr>
-                @empty
-                <tr>
-                    <td colspan="12" class="text-center text-muted">Belum ada data profil sekolah.</td>
-                </tr>
-                @endforelse
+                @foreach ($profils as $profilSekolah)
+                    <tr>
+                        <td class="text-center">{{ $profilSekolah->id_profil }}</td>
+                        <td>{{ $profilSekolah->nama_sekolah }}</td>
+                        <td>{{ $profilSekolah->kepala_sekolah }}</td>
+                        <td><img src="{{ asset('asset/image/'.$profilSekolah->foto) }}" width="80" height="80"></td>
+                        <td><img src="{{ asset('asset/image/'.$profilSekolah->logo) }}" width="80" height="80"></td>
+                        <td>{{ $profilSekolah->npsn }}</td>
+                        <td>{{ Str::limit($profilSekolah->alamat, 20, '...') }}</td>
+                        <td>{{ $profilSekolah->kontak }}</td>
+                        <td>{{ Str::limit($profilSekolah->visi_misi, 30, '...') }}</td>
+                        <td>{{ $profilSekolah->tahun_berdiri }}</td>
+                        <td>{{ Str::limit($profilSekolah->deskripsi, 40, '...') }}</td>
+                        <td class="text-center">
+                            <a href="{{ route('Admin.ps.edit', $profilSekolah->id_profil) }}" class="btn btn-sm btn-warning">
+                                <i class="fa fa-edit"></i> Edit
+                            </a>
+                        </td>
+                    </tr>
+                @endforeach
             </tbody>
         </table>
     </div>

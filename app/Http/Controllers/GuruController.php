@@ -7,28 +7,36 @@ use Illuminate\Http\Request;
 
 class GuruController extends Controller
 {
-    // Menampilkan daftar guru di halaman admin
+    // ===============================
+    //  Menampilkan daftar guru di halaman admin
+    // ===============================
     public function index()
     {
         $gurus = Guru::all(); // Ambil semua data guru
         return view('admin.guru', compact('gurus')); // Kirim data ke view
     }
 
-    // Menampilkan form untuk menambahkan guru baru
+    // ===============================
+    //  Menampilkan form untuk menambahkan guru baru
+    // ===============================
     public function create()
     {
         return view('admin.create_guru');
     }
 
-    // Menyimpan guru baru ke database
+    // ===============================
+    //  Menyimpan guru baru ke database
+    // ===============================
     public function store(Request $request)
     {
-        // Validasi input
+        // Validasi input, termasuk cek NIP unik
         $request->validate([
             'nama_guru' => 'required|string',
-            'nip' => 'required|string',
+            'nip' => 'required|string|unique:gurus,nip', // ✅ Cek NIP agar tidak duplikat
             'mapel' => 'required|string',
             'foto' => 'required|image',
+        ], [
+            'nip.unique' => 'NIP sudah terdaftar, silakan gunakan NIP lain.', // Pesan error khusus
         ]);
 
         // Upload foto guru
@@ -44,25 +52,31 @@ class GuruController extends Controller
         ]);
 
         // Redirect dengan pesan sukses
-        return redirect()->route('Admin.guru.index')->with('success', 'Data berhasil ditambahkan');
+        return redirect()->route('Admin.guru.index')->with('success', 'Data guru berhasil ditambahkan');
     }
 
-    // Menampilkan form edit guru
+    // ===============================
+    //  Menampilkan form edit guru
+    // ===============================
     public function edit($id)
     {
         $guru = Guru::find($id);
         return view('admin.edit_guru', compact('guru'));
     }
 
-    // Memperbarui data guru yang sudah ada
+    // ===============================
+    //  Memperbarui data guru yang sudah ada
+    // ===============================
     public function update(Request $request, $id)
     {
-        // Validasi input
+        // Validasi input, tetap jaga agar NIP unik kecuali dirinya sendiri
         $request->validate([
             'nama_guru' => 'required|string',
-            'nip' => 'required|string',
+            'nip' => 'required|string|unique:gurus,nip,' . $id, // ✅ Abaikan data sendiri
             'mapel' => 'required|string',
-            'foto' => 'required|image',
+            'foto' => 'nullable|image',
+        ], [
+            'nip.unique' => 'NIP sudah digunakan oleh guru lain.',
         ]);
 
         $guru = Guru::find($id);
@@ -81,20 +95,23 @@ class GuruController extends Controller
         $guru->save();
 
         // Redirect dengan pesan sukses
-        return redirect()->route('Admin.guru.index')->with('success', 'Data berhasil diubah');
+        return redirect()->route('Admin.guru.index')->with('success', 'Data guru berhasil diubah');
     }
 
-    // Menghapus data guru
+    // ===============================
+    //  Menghapus data guru
+    // ===============================
     public function destroy($id)
     {
         $guru = Guru::find($id);
         $guru->delete();
 
-        // Redirect dengan pesan sukses
-        return redirect()->route('Admin.guru.index')->with('success','Data berhasil dihapus');
+        return redirect()->route('Admin.guru.index')->with('success', 'Data guru berhasil dihapus');
     }
 
-    // Menampilkan daftar guru di halaman publik (frontend)
+    // ===============================
+    //  Menampilkan daftar guru di halaman publik
+    // ===============================
     public function guru()
     {
         $guru = Guru::all();

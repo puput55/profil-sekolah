@@ -53,7 +53,7 @@
             </div>
 
             {{-- Tombol Submit & Batal --}}
-            <button type="submit" class="btn btn-primary">Tambah</button>
+            <button type="submit" class="btn text-white" style="background-color: #001f3f;">Tambah</button>
             <a href="{{ route('Admin.user.index') }}" class="btn btn-secondary">Batal</a>
         </form>
     </div>
